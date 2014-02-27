@@ -4,9 +4,9 @@ WP_Shadow
 This is a PHP class for WordPress that loads the site in the background and performs registered WP Cron tasks.
 
 ## Scenario ##
-Let's say you have published a plugin that retrieves data from external servers. Since fetching data from external servers takes some time and slow to process, you used WP Cron to renew the data in the background and it worked well.
+Let's say you have published a plugin that retrieves data from external servers. Since fetching data from external servers takes some time and is slow to process, you used WP Cron to renew the data in the background and it worked well.
 
-A while later, a user came up and say, "It doesn't update the data on my server! Here is the login info. FIX IT PLEAESE!!" You investigated the problem and figured out that the problem lies in the fact that the host of the server that the user used had suspended `wp-cron.php`.
+A while later, a user came up and said, "It doesn't update the data on my server! Here is the login info. FIX IT PLEAESE!!" You investigated the problem and figured out that the problem lies in the fact that the host of the server that the user used had suspended `wp-cron.php`.
 
 You told the user "Your host seems to have a restriction on WP Cron. So talk to your host." The user replied, "I have no idea what you are talking about. Please fix the problem or do you want me to write a bad review on your plugin? I'm going crazy!"
 
@@ -16,12 +16,12 @@ So here is the solution.
 
 To register an action hook(s) 
 ```php
-	new WP_Shadow( array( 'my_action_hook_a', 'my_action_hook_b' ) );
+new WP_Shadow( array( 'my_action_hook_a', 'my_action_hook_b' ) );
 ```
 
 To call a background process.
 ```php
-	WP_Shadow::see();
+WP_Shadow::see();
 ```
 
 ## Demo ##
@@ -62,8 +62,7 @@ class WP_Shadow_Demo {
 	}
 	
 	/**
-	 * Simulates a task which should be performed in the background.
-	 * 
+	 * Assuming this is the task that should be performed in the background, this creates a log file in the script directory.
 	 */
 	public function doTask( $aArgs ) {
 		
