@@ -1,33 +1,17 @@
-WP_Shadow
-=========
+<?php
+/* 
+ * Plugin Name: WP Shadow Demo
+ * Description: An alternative to WP Cron.
+ * Author: Michael Uno
+ * Version: 1.0.0
+ */
 
-This is a PHP class for WordPress that loads the site in the background and performs registered WP Cron tasks.
 
-## Scenario ##
-Let's say you have published a plugin that retrieves data from external servers. Since fetching data from external servers takes some time and slow to process, you used WP Cron to renew the data in the background and it worked well.
+if ( ! defined( 'ABSPATH' ) ) exit;	// Exit if accessed directly
 
-A while later, a user came up and say, "It doesn't update the data on my server! Here is the login info. FIX IT PLEAESE!!" You investigated the problem and figured out that the problem lies in the fact that the host of the server that the user used had suspended `wp-cron.php`.
-
-You told the user "Your host seems to have a restriction on WP Cron. So talk to your host." The user replied, "I have no idea what you are talking about. Please fix the problem or do you want me to write a bad review on your plugin? I'm going crazy!"
-
-So here is the solution.
-
-## Basic Usage ##
-
-To register an action hook(s) 
-```php
-	new WP_Shadow( array( 'my_action_hook_a', 'my_action_hook_b' ) );
-```
-
-To call a background process.
-```php
-	WP_Shadow::see();
-```
-
-## Demo ##
-```php
 // Load the class
 include_once( dirname( __FILE__ ) . '/class/WP_Shadow.php' );	
+
 new WP_Shadow_Demo;
 
 class WP_Shadow_Demo {
@@ -46,7 +30,8 @@ class WP_Shadow_Demo {
 		new WP_Shadow( 'do_wp_shadow_demo' );
 		
 	}
-		
+	
+	
 	private function scheduleCronTask() {
 
 		$aArgs = array( 'a', 'b', 'c' );
@@ -95,5 +80,5 @@ class WP_Shadow_Demo {
 			return $sProtocol . '://' . $sHost . $sPort . $_SERVER['REQUEST_URI'];
 		}
 
+	
 }
-```
