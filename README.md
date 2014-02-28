@@ -1,4 +1,4 @@
-WP_Shadow
+WP Shadow
 =========
 
 This is a PHP class for WordPress that loads the site in the background and performs registered WP Cron tasks.
@@ -13,6 +13,10 @@ You told the user "Your host seems to have a restriction on WP Cron. So talk to 
 So here is the solution.
 
 ## Basic Usage ##
+
+1. Register a task normally with WP Cron functions such as [wp_schedule_single_event()](http://codex.wordpress.org/Function_Reference/wp_schedule_single_event).
+2. Register the action hook with the WP_Shadow class.
+3. Call the background process with the `see()` static method.
 
 To register an action hook(s) 
 ```php
