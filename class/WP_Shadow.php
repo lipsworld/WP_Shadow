@@ -5,6 +5,7 @@
  * @package     WP_Shadow
  * @copyright   Copyright (c) 2013, Michael Uno
  * @authorurl	http://michaeluno.jp
+ * @version		1.0.1
 */
 class WP_Shadow {
 		
@@ -56,7 +57,7 @@ class WP_Shadow {
 	
 		// Do not process if a delay is not set.
 		if ( ! $this->isBackground( true ) ) {	
-			die( $this->_loadBackgroundPageWithDelay( 2 ) );	// give 2 seconds delay
+			die( $this->_loadBackgroundPageWithDelay( 2, $_GET ) );	// give 2 seconds delay
 		}
 
 		// At this point, the page is loaded in the background with some delays.
@@ -195,9 +196,28 @@ class WP_Shadow {
 			: $iSetTime;
 		
 	}
-			
+	
 	/**
 	 * Accesses the site in the background.
+	 * 
+	 * @since			1.0.1
+	 */
+	static public function gaze( $aGet=array() ) {
+
+		if ( isset( $_GET['doing_wp_cron'] ) ) return;	// WP Cron
+		if ( isset( $GLOBALS['pagenow'] ) && $GLOBALS['pagenow'] == 'admin-ajax.php' ) return;	// WP Heart-beat API	
+		
+		// Ensures the task is done only once in a page load.
+		static $_bIsCalled;
+		if ( $_bIsCalled ) return;
+		$_bIsCalled = true;
+		
+		self::_loadBackgroundPageWithDelay( 0, $aGet );
+		
+	}
+	
+	/**
+	 * Accesses the site in the background at the end of the script execution.
 	 * 
 	 * This is used to trigger cron events in the background and sets a static flag so that it ensures it is done only once per page load.
 	 * 
@@ -278,11 +298,15 @@ class WP_Shadow {
 		 * 
 		 * @since			1.0.0
 		 */
-		private function _loadBackgroundPageWithDelay( $iSecond=1 ) {
+		private function _loadBackgroundPageWithDelay( $iSecond=1, $aGet=array() ) {
 			
 			sleep( $iSecond );
+			
+			if ( defined( 'WP_DEBUG' ) ) {
+				$aGet['debug'] = WP_DEBUG;
+			}			
 			wp_remote_get(
-				site_url(  '?' . http_build_query( $_GET ) ), 
+				site_url(  '?' . http_build_query( $aGet ) ), 
 				array( 
 					'timeout'	=>	0.01, 
 					'sslverify'	=>	false, 
